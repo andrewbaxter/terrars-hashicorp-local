@@ -1,5 +1,5 @@
 [package]
-name = "terrars-hashicorp-aws"
+name = "terrars-hashicorp-local"
 edition = "2021"
 version = "0.1.0"
 description = "Pre-generated Terrars Local bindings"
