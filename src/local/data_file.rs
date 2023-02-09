@@ -6,6 +6,8 @@ use super::provider::ProviderLocal;
 
 #[derive(Serialize)]
 struct DataFileData {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    depends_on: Vec<String>,
     #[serde(skip_serializing_if = "SerdeSkipDefault::is_default")]
     provider: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -25,6 +27,11 @@ pub struct DataFile(Rc<DataFile_>);
 impl DataFile {
     fn shared(&self) -> &StackShared {
         &self.0.shared
+    }
+
+    pub fn depends_on(self, dep: &impl Dependable) -> Self {
+        self.0.data.borrow_mut().depends_on.push(dep.extract_ref());
+        self
     }
 
     pub fn set_provider(&self, provider: &ProviderLocal) -> &Self {
@@ -56,6 +63,12 @@ impl DataFile {
 impl Datasource for DataFile {
     fn extract_ref(&self) -> String {
         format!("data.{}.{}", self.0.extract_datasource_type(), self.0.extract_tf_id())
+    }
+}
+
+impl Dependable for DataFile {
+    fn extract_ref(&self) -> String {
+        Datasource::extract_ref(self)
     }
 }
 
@@ -94,6 +107,7 @@ impl BuildDataFile {
             shared: stack.shared.clone(),
             tf_id: self.tf_id,
             data: RefCell::new(DataFileData {
+                depends_on: core::default::Default::default(),
                 provider: None,
                 for_each: None,
                 filename: self.filename,
