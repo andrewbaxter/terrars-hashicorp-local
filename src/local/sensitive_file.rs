@@ -1,53 +1,57 @@
 use serde::Serialize;
-use std::cell::RefCell;
-use std::rc::Rc;
-use terrars::*;
+use terrars::{
+    Referable as _,
+    Resource_ as _,
+    Ref as _,
+};
 use super::provider::ProviderLocal;
 
 #[derive(Serialize)]
 struct SensitiveFileData {
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    depends_on: Vec<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    provider: Option<String>,
-    #[serde(skip_serializing_if = "SerdeSkipDefault::is_default")]
-    lifecycle: ResourceLifecycle,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    for_each: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    content: Option<PrimField<String>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    content_base64: Option<PrimField<String>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    directory_permission: Option<PrimField<String>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    file_permission: Option<PrimField<String>>,
-    filename: PrimField<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    source: Option<PrimField<String>>,
+    #[serde(skip_serializing_if = "std::vec::Vec::is_empty")]
+    depends_on: std::vec::Vec<std::string::String>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    provider: std::option::Option<std::string::String>,
+    #[serde(skip_serializing_if = "terrars::SerdeSkipDefault::is_default")]
+    lifecycle: terrars::ResourceLifecycle,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    for_each: std::option::Option<std::string::String>,
+    #[serde(skip_serializing_if = "std::vec::Vec::is_empty")]
+    provisioner: std::vec::Vec<terrars::Provisioner>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    content: std::option::Option<terrars::PrimField<std::string::String>>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    content_base64: std::option::Option<terrars::PrimField<std::string::String>>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    directory_permission: std::option::Option<terrars::PrimField<std::string::String>>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    file_permission: std::option::Option<terrars::PrimField<std::string::String>>,
+    filename: terrars::PrimField<std::string::String>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    source: std::option::Option<terrars::PrimField<std::string::String>>,
 }
 
 struct SensitiveFile_ {
-    shared: StackShared,
-    tf_id: String,
-    data: RefCell<SensitiveFileData>,
+    shared: terrars::StackShared,
+    tf_id: std::string::String,
+    data: std::cell::RefCell<SensitiveFileData>,
 }
 
 #[derive(Clone)]
-pub struct SensitiveFile(Rc<SensitiveFile_>);
+pub struct SensitiveFile(std::rc::Rc<SensitiveFile_>);
 
 impl SensitiveFile {
-    fn shared(&self) -> &StackShared {
+    fn shared(&self) -> &terrars::StackShared {
         &self.0.shared
     }
 
-    pub fn depends_on(self, dep: &impl Referable) -> Self {
+    pub fn depends_on(self, dep: &impl terrars::Referable) -> Self {
         self.0.data.borrow_mut().depends_on.push(dep.extract_ref());
         self
     }
 
     pub fn set_provider(self, provider: &ProviderLocal) -> Self {
-        self.0.data.borrow_mut().provider = Some(provider.provider_ref());
+        self.0.data.borrow_mut().provider = std::option::Option::Some(provider.provider_ref());
         self
     }
 
@@ -62,130 +66,175 @@ impl SensitiveFile {
     }
 
     pub fn ignore_changes_to_all(self) -> Self {
-        self.0.data.borrow_mut().lifecycle.ignore_changes = Some(IgnoreChanges::All(IgnoreChangesAll::All));
+        self.0.data.borrow_mut().lifecycle.ignore_changes =
+            std::option::Option::Some(terrars::IgnoreChanges::All(terrars::IgnoreChangesAll::All));
         self
     }
 
-    pub fn ignore_changes_to_attr(self, attr: impl ToString) -> Self {
+    pub fn ignore_changes_to_attr(self, attr: impl std::string::ToString) -> Self {
         {
             let mut d = self.0.data.borrow_mut();
             if match &mut d.lifecycle.ignore_changes {
-                Some(i) => match i {
-                    IgnoreChanges::All(_) => {
+                std::option::Option::Some(i) => match i {
+                    terrars::IgnoreChanges::All(_) => {
                         true
                     },
-                    IgnoreChanges::Refs(r) => {
+                    terrars::IgnoreChanges::Refs(r) => {
                         r.push(attr.to_string());
                         false
                     },
                 },
-                None => true,
+                std::option::Option::None => true,
             } {
-                d.lifecycle.ignore_changes = Some(IgnoreChanges::Refs(vec![attr.to_string()]));
+                d.lifecycle.ignore_changes =
+                    std::option::Option::Some(terrars::IgnoreChanges::Refs(vec![attr.to_string()]));
             }
         }
         self
     }
 
-    pub fn replace_triggered_by_resource(self, r: &impl Resource) -> Self {
+    pub fn replace_triggered_by_resource(self, r: &impl terrars::Resource) -> Self {
         self.0.data.borrow_mut().lifecycle.replace_triggered_by.push(r.extract_ref());
         self
     }
 
-    pub fn replace_triggered_by_attr(self, attr: impl ToString) -> Self {
+    pub fn replace_triggered_by_attr(self, attr: impl std::string::ToString) -> Self {
         self.0.data.borrow_mut().lifecycle.replace_triggered_by.push(attr.to_string());
         self
     }
 
-    #[doc= "Set the field `content`.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn set_content(self, v: impl Into<PrimField<String>>) -> Self {
-        self.0.data.borrow_mut().content = Some(v.into());
+    #[doc = r" Add a provisioner (ex: `local-exec`, `remote-exec`, `file`) to this resource."]
+    #[doc = r" Provisioners run in the order they're added."]
+    pub fn add_provisioner(self, v: impl std::convert::Into<terrars::Provisioner>) -> Self {
+        self.0.data.borrow_mut().provisioner.push(v.into());
         self
     }
 
-    #[doc= "Set the field `content_base64`.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn set_content_base64(self, v: impl Into<PrimField<String>>) -> Self {
-        self.0.data.borrow_mut().content_base64 = Some(v.into());
+    pub fn add_lifecycle_precondition(
+        self,
+        condition: impl std::convert::Into<terrars::PrimField<bool>>,
+        error_message: impl std::convert::Into<terrars::PrimField<std::string::String>>,
+    ) -> Self {
+        self.0.data.borrow_mut().lifecycle.precondition.push(terrars::LifecycleCondition {
+            condition: condition.into(),
+            error_message: error_message.into(),
+        });
         self
     }
 
-    #[doc= "Set the field `directory_permission`.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn set_directory_permission(self, v: impl Into<PrimField<String>>) -> Self {
-        self.0.data.borrow_mut().directory_permission = Some(v.into());
+    pub fn add_lifecycle_postcondition(
+        self,
+        condition: impl std::convert::Into<terrars::PrimField<bool>>,
+        error_message: impl std::convert::Into<terrars::PrimField<std::string::String>>,
+    ) -> Self {
+        self.0.data.borrow_mut().lifecycle.postcondition.push(terrars::LifecycleCondition {
+            condition: condition.into(),
+            error_message: error_message.into(),
+        });
         self
     }
 
-    #[doc= "Set the field `file_permission`.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn set_file_permission(self, v: impl Into<PrimField<String>>) -> Self {
-        self.0.data.borrow_mut().file_permission = Some(v.into());
+    #[doc =
+        "Set the field `content`.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn set_content(self, v: impl std::convert::Into<terrars::PrimField<std::string::String>>) -> Self {
+        self.0.data.borrow_mut().content = std::option::Option::Some(v.into());
         self
     }
 
-    #[doc= "Set the field `source`.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
-    pub fn set_source(self, v: impl Into<PrimField<String>>) -> Self {
-        self.0.data.borrow_mut().source = Some(v.into());
+    #[doc =
+        "Set the field `content_base64`.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn set_content_base64(self, v: impl std::convert::Into<terrars::PrimField<std::string::String>>) -> Self {
+        self.0.data.borrow_mut().content_base64 = std::option::Option::Some(v.into());
         self
     }
 
-    #[doc= "Get a reference to the value of field `content` after provisioning.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn content(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.content", self.extract_ref()))
+    #[doc =
+        "Set the field `directory_permission`.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn set_directory_permission(self, v: impl std::convert::Into<terrars::PrimField<std::string::String>>) -> Self {
+        self.0.data.borrow_mut().directory_permission = std::option::Option::Some(v.into());
+        self
     }
 
-    #[doc= "Get a reference to the value of field `content_base64` after provisioning.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn content_base64(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.content_base64", self.extract_ref()))
+    #[doc =
+        "Set the field `file_permission`.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn set_file_permission(self, v: impl std::convert::Into<terrars::PrimField<std::string::String>>) -> Self {
+        self.0.data.borrow_mut().file_permission = std::option::Option::Some(v.into());
+        self
     }
 
-    #[doc= "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn directory_permission(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
+    #[doc =
+        "Set the field `source`.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
+    pub fn set_source(self, v: impl std::convert::Into<terrars::PrimField<std::string::String>>) -> Self {
+        self.0.data.borrow_mut().source = std::option::Option::Some(v.into());
+        self
     }
 
-    #[doc= "Get a reference to the value of field `file_permission` after provisioning.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn file_permission(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.file_permission", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `content` after provisioning.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn content(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `filename` after provisioning.\nThe path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
-    pub fn filename(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.filename", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `content_base64` after provisioning.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn content_base64(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
-    pub fn id(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn directory_permission(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `source` after provisioning.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
-    pub fn source(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.source", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `file_permission` after provisioning.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn file_permission(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.file_permission", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `filename` after provisioning.\nThe path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
+    pub fn filename(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.filename", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
+    pub fn id(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `source` after provisioning.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
+    pub fn source(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.source", self.extract_ref()))
     }
 }
 
-impl Referable for SensitiveFile {
-    fn extract_ref(&self) -> String {
+impl terrars::Referable for SensitiveFile {
+    fn extract_ref(&self) -> std::string::String {
         format!("{}.{}", self.0.extract_resource_type(), self.0.extract_tf_id())
     }
 }
 
-impl Resource for SensitiveFile { }
+impl terrars::Resource for SensitiveFile { }
 
-impl ToListMappable for SensitiveFile {
-    type O = ListRef<SensitiveFileRef>;
+impl terrars::ToListMappable for SensitiveFile {
+    type O = terrars::ListRef<SensitiveFileRef>;
 
-    fn do_map(self, base: String) -> Self::O {
-        self.0.data.borrow_mut().for_each = Some(format!("${{{}}}", base));
-        ListRef::new(self.0.shared.clone(), self.extract_ref())
+    fn do_map(self, base: std::string::String) -> Self::O {
+        self.0.data.borrow_mut().for_each = std::option::Option::Some(format!("${{{}}}", base));
+        terrars::ListRef::new(self.0.shared.clone(), self.extract_ref())
     }
 }
 
-impl Resource_ for SensitiveFile_ {
-    fn extract_resource_type(&self) -> String {
+impl terrars::Resource_ for SensitiveFile_ {
+    fn extract_resource_type(&self) -> std::string::String {
         "local_sensitive_file".into()
     }
 
-    fn extract_tf_id(&self) -> String {
+    fn extract_tf_id(&self) -> std::string::String {
         self.tf_id.clone()
     }
 
@@ -195,21 +244,23 @@ impl Resource_ for SensitiveFile_ {
 }
 
 pub struct BuildSensitiveFile {
-    pub tf_id: String,
-    #[doc= "The path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
-    pub filename: PrimField<String>,
+    pub tf_id: std::string::String,
+    #[doc =
+        "The path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
+    pub filename: terrars::PrimField<std::string::String>,
 }
 
 impl BuildSensitiveFile {
-    pub fn build(self, stack: &mut Stack) -> SensitiveFile {
-        let out = SensitiveFile(Rc::new(SensitiveFile_ {
+    pub fn build(self, stack: &mut terrars::Stack) -> SensitiveFile {
+        let out = SensitiveFile(std::rc::Rc::new(SensitiveFile_ {
             shared: stack.shared.clone(),
             tf_id: self.tf_id,
-            data: RefCell::new(SensitiveFileData {
+            data: std::cell::RefCell::new(SensitiveFileData {
                 depends_on: core::default::Default::default(),
-                provider: None,
+                provider: std::option::Option::None,
                 lifecycle: core::default::Default::default(),
-                for_each: None,
+                for_each: std::option::Option::None,
+                provisioner: core::default::Default::default(),
                 content: core::default::Default::default(),
                 content_base64: core::default::Default::default(),
                 directory_permission: core::default::Default::default(),
@@ -224,12 +275,12 @@ impl BuildSensitiveFile {
 }
 
 pub struct SensitiveFileRef {
-    shared: StackShared,
-    base: String,
+    shared: terrars::StackShared,
+    base: std::string::String,
 }
 
-impl Ref for SensitiveFileRef {
-    fn new(shared: StackShared, base: String) -> Self {
+impl terrars::Ref for SensitiveFileRef {
+    fn new(shared: terrars::StackShared, base: std::string::String) -> Self {
         Self {
             shared: shared,
             base: base,
@@ -238,46 +289,53 @@ impl Ref for SensitiveFileRef {
 }
 
 impl SensitiveFileRef {
-    fn extract_ref(&self) -> String {
+    fn extract_ref(&self) -> std::string::String {
         self.base.clone()
     }
 
-    fn shared(&self) -> &StackShared {
+    fn shared(&self) -> &terrars::StackShared {
         &self.shared
     }
 
-    #[doc= "Get a reference to the value of field `content` after provisioning.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn content(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.content", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `content` after provisioning.\nSensitive Content to store in the file, expected to be a UTF-8 encoded string.\n Conflicts with `content_base64` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn content(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `content_base64` after provisioning.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
-    pub fn content_base64(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.content_base64", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `content_base64` after provisioning.\nSensitive Content to store in the file, expected to be binary encoded as base64 string.\n Conflicts with `content` and `source`.\n Exactly one of these three arguments must be specified."]
+    pub fn content_base64(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn directory_permission(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn directory_permission(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `file_permission` after provisioning.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
-    pub fn file_permission(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.file_permission", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `file_permission` after provisioning.\nPermissions to set for the output file (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
+    pub fn file_permission(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.file_permission", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `filename` after provisioning.\nThe path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
-    pub fn filename(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.filename", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `filename` after provisioning.\nThe path to the file that will be created.\n Missing parent directories will be created.\n If the file already exists, it will be overridden with the given content."]
+    pub fn filename(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.filename", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
-    pub fn id(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
+    pub fn id(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
     }
 
-    #[doc= "Get a reference to the value of field `source` after provisioning.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
-    pub fn source(&self) -> PrimExpr<String> {
-        PrimExpr::new(self.shared().clone(), format!("{}.source", self.extract_ref()))
+    #[doc =
+        "Get a reference to the value of field `source` after provisioning.\nPath to file to use as source for the one we are creating.\n Conflicts with `content` and `content_base64`.\n Exactly one of these three arguments must be specified."]
+    pub fn source(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.source", self.extract_ref()))
     }
 }

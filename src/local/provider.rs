@@ -1,38 +1,35 @@
 use serde::Serialize;
-use std::cell::RefCell;
-use std::rc::Rc;
-use terrars::*;
 
 #[derive(Serialize)]
 struct ProviderLocalData {
-    #[serde(skip_serializing_if = "Option::is_none")]
-    alias: Option<String>,
+    #[serde(skip_serializing_if = "std::option::Option::is_none")]
+    alias: std::option::Option<std::string::String>,
 }
 
 struct ProviderLocal_ {
-    data: RefCell<ProviderLocalData>,
+    data: std::cell::RefCell<ProviderLocalData>,
 }
 
-pub struct ProviderLocal(Rc<ProviderLocal_>);
+pub struct ProviderLocal(std::rc::Rc<ProviderLocal_>);
 
 impl ProviderLocal {
-    pub fn provider_ref(&self) -> String {
+    pub fn provider_ref(&self) -> std::string::String {
         let data = self.0.data.borrow();
-        if let Some(alias) = &data.alias {
+        if let std::option::Option::Some(alias) = &data.alias {
             format!("{}.{}", "local", alias)
         } else {
             "local".into()
         }
     }
 
-    pub fn set_alias(self, alias: impl ToString) -> Self {
-        self.0.data.borrow_mut().alias = Some(alias.to_string());
+    pub fn set_alias(self, alias: impl std::string::ToString) -> Self {
+        self.0.data.borrow_mut().alias = std::option::Option::Some(alias.to_string());
         self
     }
 }
 
-impl Provider for ProviderLocal_ {
-    fn extract_type_tf_id(&self) -> String {
+impl terrars::Provider for ProviderLocal_ {
+    fn extract_type_tf_id(&self) -> std::string::String {
         "local".into()
     }
 
@@ -51,9 +48,15 @@ impl Provider for ProviderLocal_ {
 pub struct BuildProviderLocal {}
 
 impl BuildProviderLocal {
-    pub fn build(self, stack: &mut Stack) -> ProviderLocal {
+    pub fn build(self, stack: &mut terrars::Stack) -> ProviderLocal {
         let out =
-            ProviderLocal(Rc::new(ProviderLocal_ { data: RefCell::new(ProviderLocalData { alias: None }) }));
+            ProviderLocal(
+                std::rc::Rc::new(
+                    ProviderLocal_ {
+                        data: std::cell::RefCell::new(ProviderLocalData { alias: std::option::Option::None }),
+                    },
+                ),
+            );
         stack.add_provider(out.0.clone());
         out
     }
