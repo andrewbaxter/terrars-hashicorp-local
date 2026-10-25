@@ -1,13 +1,15 @@
+#![allow(non_camel_case_types)]
+
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct ProviderLocalData {
+struct ProviderLocalData_ {
     #[serde(skip_serializing_if = "std::option::Option::is_none")]
     alias: std::option::Option<std::string::String>,
 }
 
 struct ProviderLocal_ {
-    data: std::cell::RefCell<ProviderLocalData>,
+    data: std::cell::RefCell<ProviderLocalData_>,
 }
 
 pub struct ProviderLocal(std::rc::Rc<ProviderLocal_>);
@@ -36,7 +38,7 @@ impl terrars::Provider for ProviderLocal_ {
     fn extract_provider_type(&self) -> serde_json::Value {
         serde_json::json!({
             "source": "hashicorp/local",
-            "version": "2.3.0",
+            "version": "2.9.1",
         })
     }
 
@@ -53,7 +55,7 @@ impl BuildProviderLocal {
             ProviderLocal(
                 std::rc::Rc::new(
                     ProviderLocal_ {
-                        data: std::cell::RefCell::new(ProviderLocalData { alias: std::option::Option::None }),
+                        data: std::cell::RefCell::new(ProviderLocalData_ { alias: std::option::Option::None }),
                     },
                 ),
             );

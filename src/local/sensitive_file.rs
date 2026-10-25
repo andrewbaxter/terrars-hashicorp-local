@@ -1,3 +1,5 @@
+#![allow(non_camel_case_types)]
+
 use serde::Serialize;
 use terrars::{
     Referable as _,
@@ -7,7 +9,7 @@ use terrars::{
 use super::provider::ProviderLocal;
 
 #[derive(Serialize)]
-struct SensitiveFileData {
+struct SensitiveFileData_ {
     #[serde(skip_serializing_if = "std::vec::Vec::is_empty")]
     depends_on: std::vec::Vec<std::string::String>,
     #[serde(skip_serializing_if = "std::option::Option::is_none")]
@@ -34,7 +36,7 @@ struct SensitiveFileData {
 struct SensitiveFile_ {
     shared: terrars::StackShared,
     tf_id: std::string::String,
-    data: std::cell::RefCell<SensitiveFileData>,
+    data: std::cell::RefCell<SensitiveFileData_>,
 }
 
 #[derive(Clone)]
@@ -182,6 +184,40 @@ impl SensitiveFile {
     }
 
     #[doc =
+        "Get a reference to the value of field `content_base64sha256` after provisioning.\nBase64 encoded SHA256 checksum of file content."]
+    pub fn content_base64sha256(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64sha256", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_base64sha512` after provisioning.\nBase64 encoded SHA512 checksum of file content."]
+    pub fn content_base64sha512(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64sha512", self.extract_ref()))
+    }
+
+    #[doc = "Get a reference to the value of field `content_md5` after provisioning.\nMD5 checksum of file content."]
+    pub fn content_md5(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_md5", self.extract_ref()))
+    }
+
+    #[doc = "Get a reference to the value of field `content_sha1` after provisioning.\nSHA1 checksum of file content."]
+    pub fn content_sha1(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha1", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_sha256` after provisioning.\nSHA256 checksum of file content."]
+    pub fn content_sha256(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha256", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_sha512` after provisioning.\nSHA512 checksum of file content."]
+    pub fn content_sha512(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha512", self.extract_ref()))
+    }
+
+    #[doc =
         "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
     pub fn directory_permission(&self) -> terrars::PrimExpr<std::string::String> {
         terrars::PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
@@ -200,7 +236,7 @@ impl SensitiveFile {
     }
 
     #[doc =
-        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
+        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the SHA1 checksum of the file content."]
     pub fn id(&self) -> terrars::PrimExpr<std::string::String> {
         terrars::PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
     }
@@ -255,7 +291,7 @@ impl BuildSensitiveFile {
         let out = SensitiveFile(std::rc::Rc::new(SensitiveFile_ {
             shared: stack.shared.clone(),
             tf_id: self.tf_id,
-            data: std::cell::RefCell::new(SensitiveFileData {
+            data: std::cell::RefCell::new(SensitiveFileData_ {
                 depends_on: core::default::Default::default(),
                 provider: std::option::Option::None,
                 lifecycle: core::default::Default::default(),
@@ -310,6 +346,40 @@ impl SensitiveFileRef {
     }
 
     #[doc =
+        "Get a reference to the value of field `content_base64sha256` after provisioning.\nBase64 encoded SHA256 checksum of file content."]
+    pub fn content_base64sha256(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64sha256", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_base64sha512` after provisioning.\nBase64 encoded SHA512 checksum of file content."]
+    pub fn content_base64sha512(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_base64sha512", self.extract_ref()))
+    }
+
+    #[doc = "Get a reference to the value of field `content_md5` after provisioning.\nMD5 checksum of file content."]
+    pub fn content_md5(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_md5", self.extract_ref()))
+    }
+
+    #[doc = "Get a reference to the value of field `content_sha1` after provisioning.\nSHA1 checksum of file content."]
+    pub fn content_sha1(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha1", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_sha256` after provisioning.\nSHA256 checksum of file content."]
+    pub fn content_sha256(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha256", self.extract_ref()))
+    }
+
+    #[doc =
+        "Get a reference to the value of field `content_sha512` after provisioning.\nSHA512 checksum of file content."]
+    pub fn content_sha512(&self) -> terrars::PrimExpr<std::string::String> {
+        terrars::PrimExpr::new(self.shared().clone(), format!("{}.content_sha512", self.extract_ref()))
+    }
+
+    #[doc =
         "Get a reference to the value of field `directory_permission` after provisioning.\nPermissions to set for directories created (before umask), expressed as string in\n [numeric notation](https://en.wikipedia.org/wiki/File-system_permissions#Numeric_notation).\n Default value is `\"0700\"`."]
     pub fn directory_permission(&self) -> terrars::PrimExpr<std::string::String> {
         terrars::PrimExpr::new(self.shared().clone(), format!("{}.directory_permission", self.extract_ref()))
@@ -328,7 +398,7 @@ impl SensitiveFileRef {
     }
 
     #[doc =
-        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the checksum of the file content"]
+        "Get a reference to the value of field `id` after provisioning.\nThe hexadecimal encoding of the SHA1 checksum of the file content."]
     pub fn id(&self) -> terrars::PrimExpr<std::string::String> {
         terrars::PrimExpr::new(self.shared().clone(), format!("{}.id", self.extract_ref()))
     }

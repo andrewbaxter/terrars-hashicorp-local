@@ -1,6 +1,6 @@
 {
     "provider": "hashicorp/local",
-    "version": "2.3.0",
+    "version": "2.9.1",
     "dest": "src/local",
 	"feature_gate": "Cargo.toml"
 }

@@ -1,3 +1,5 @@
+ 
+
 pub mod provider;
 
 pub use provider::*;
@@ -13,6 +15,12 @@ pub mod sensitive_file;
 
 #[cfg(feature = "sensitive_file")]
 pub use sensitive_file::*;
+
+#[cfg(feature = "data_command")]
+pub mod data_command;
+
+#[cfg(feature = "data_command")]
+pub use data_command::*;
 
 #[cfg(feature = "data_file")]
 pub mod data_file;
